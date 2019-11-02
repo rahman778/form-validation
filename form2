@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>form</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <style>
+        .modal-dialog {
+            max-width: 400px;
+        }
+
+        .error_form {
+            color: rgb(216, 15, 15);
+            font-size: 15px;
+            font-family: Helvetica;
+            position: absolute;
+        }
+
+        .form-control {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+        #success-message {
+            display: none;
+            color: #155724;
+            text-align: center;
+            background-color: #d4edda;
+            width: 30%;
+            border-radius: 5px;
+            padding: 5px 10px;
+            font-weight: 400;
+            font-size: 17px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .modal-header {
+            background-color: #16516D;
+            color: #fff;
+        }
+
+        .modal-body {
+            background-color: #E7E7E7;
+            border-radius: 0.4rem;
+        }
+
+        form .btn {
+            float: right;
+            background-color: #16516D;
+            color: #fff;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-content {
+            border-radius: 0.4rem;
+        }
+    </style>
+</head>
+
+<body>
+
+
+
+    <!-- Button trigger modal -->
+    <button type="button" id="expand" class="btn btn-primary ml-5" data-toggle="modal" data-target="#exampleModal">
+        Launch demo modal
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Contact</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="" class="mx-auto" id="registration_form">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" aria-describedby="nameHelp"
+                                placeholder="Enter name">
+                            <span class="error_form" id="fname_error_message"></span>
+                        </div>
+                        <div class="form-group pt-2">
+                            <label for="number">Phone number</label>
+                            <input type="text" class="form-control" id="number" aria-describedby="numberHelp"
+                                placeholder="Enter number">
+                            <span class="error_form" id="phone_error_message"></span>
+                        </div>
+                        <div class="form-group pt-2">
+                            <label for="email">Email address</label>
+                            <input type="text" class="form-control" id="email" aria-describedby="emailHelp"
+                                placeholder="Enter email">
+                            <span class="error_form" id="email_error_message"></span>
+                        </div>
+                        <button type="submit" class="btn mt-2">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal End -->
+    <div id="success-message">We will send you a message</div>
+
+    <div>Lorem ipsum dolor sit amet consectetur.</div>
+
+
+
+    <script>
+        $(function () {
+
+            var error_fname = false;
+            var error_email = false;
+            var error_phone = false;
+
+            $("#expand").click(function () {
+                $("#fname_error_message").hide();
+                $("#email_error_message").hide();
+                $("#phone_error_message").hide();
+
+                //border color
+                $("#name").css("border", "1px solid #ced4da");
+                $("#email").css("border", "1px solid #ced4da");
+                $("#number").css("border", "1px solid #ced4da");
+
+                //empty value
+                $("#name").val('');
+                $("#email").val('');
+                $("#number").val('');
+            })
+
+            $("#name").focusout(function () {
+                check_name();
+            });
+
+            $("#email").focusout(function () {
+                check_email();
+            });
+
+            $("#number").focusout(function () {
+                check_number();
+            });
+
+            $("#name").focusin(function () {
+                $("#fname_error_message").hide();
+                $("#name").css("border", "1px solid #ced4da");
+            })
+
+            $("#email").focusin(function () {
+                $("#email_error_message").hide();
+                $("#email").css("border", "1px solid #ced4da");
+            })
+
+            $("#number").focusin(function () {
+                $("#phone_error_message").hide();
+                $("#number").css("border", "1px solid #ced4da");
+            })
+
+            function check_name() {
+                var pattern = /^[a-zA-Z]*$/;
+                var fname = $("#name").val();
+                var name_length = $("#name").val().length;
+                if (fname == '') {
+                    $("#fname_error_message").html("Please enter your name");
+                    $("#fname_error_message").show();
+                    $("#name").css("border", "1px solid #F90A0A");
+                    error_fname = true;
+                }
+                else if (name_length < 3) {
+                    $("#fname_error_message").html("Name should be atleast 3 characters");
+                    $("#fname_error_message").show();
+                    $("#name").css("border", "1px solid #F90A0A");
+                    error_fname = true;
+                }
+                else {
+                    if (pattern.test(fname) === false) {
+                        $("#fname_error_message").html("Name should contain only Characters");
+                        $("#fname_error_message").show();
+                        $("#name").css("border", "1px solid #F90A0A");
+                        error_fname = true;
+                    } else {
+                        $("#fname_error_message").hide();
+                        $("#name").css("border", "1px solid #34F458");
+                    }
+                }
+            }
+
+
+            function check_number() {
+                var pattern = /^[0-9]\d{9}$/;
+                var number = $("#number").val();
+
+                if (number == '') {
+                    $("#phone_error_message").html("Please enter your phone number");
+                    $("#phone_error_message").show();
+                    $("#number").css("border", "1px solid #F90A0A");
+                    error_phone = true;
+                } else {
+                    if (pattern.test(number) === false) {
+                        $("#phone_error_message").html("Please enter a valid number");
+                        $("#phone_error_message").show();
+                        $("#number").css("border", "1px solid #F90A0A");
+                        error_phone = true;
+                    } else {
+                        $("#phone_error_message").hide();
+                        $("#number").css("border", "1px solid #34F458");
+                    }
+                }
+            }
+
+            function check_email() {
+                var pattern = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+                var email = $("#email").val();
+
+                if (email == '') {
+                    $("#email_error_message").html("Please enter your email address");
+                    $("#email_error_message").show();
+                    $("#email").css("border", "1px solid #F90A0A");
+                    error_email = true;
+                } else {
+                    if (pattern.test(email) === false) {
+                        $("#email_error_message").html("Please enter a valid email address");
+                        $("#email_error_message").show();
+                        $("#email").css("border", "1px solid #F90A0A");
+                        error_fname = true;
+                    } else {
+                        $("#email_error_message").hide();
+                        $("#email").css("border", "1px solid #34F458");
+                    }
+                }
+            }
+
+            $("#registration_form").submit(function () {
+                error_fname = false;
+                error_email = false;
+                error_phone = false;
+
+                check_name();
+                check_email();
+                check_number();
+
+                if (error_fname === false && error_phone === false) {
+                    $("#email_error_message").hide();
+                    alert_success();
+                    $('.modal').modal('hide');
+                    return false;
+                }
+                else if (error_fname === false && error_email === false) {
+                    $("#phone_error_message").hide();
+                    alert_success();
+                    $('.modal').modal('hide');
+                    return false;
+                }
+                else {
+                    return false;
+                }
+
+                function alert_success() {
+                    $('#success-message').fadeIn(500, function () {
+                        $(this).delay(2000).fadeOut('fast');
+                    });
+                }
+            });
+        });
+
+
+    </script>
+
+</body>
+
+</html>
